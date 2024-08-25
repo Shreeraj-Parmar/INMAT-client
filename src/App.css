@@ -1,0 +1,25 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  background-color: #444444;
+}
+
+.signUp {
+  background-color: white;
+  color: #444444;
+}
+
+.wrapper-hero {
+  /* background-image: url("../public//invoiceAssets//hero2.png"); */
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-repeat: no-repeat; */
+  background-position: center center;
+}
+/* 
+* {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+} */
