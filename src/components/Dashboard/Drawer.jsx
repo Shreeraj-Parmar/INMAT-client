@@ -5,8 +5,8 @@ import Menu from "./Menu";
 import ReactGA from "react-ga4";
 
 const DrawrWith = styled(Drawer)`
-  width: 500px;
-  ${"" /* border: black 2px solid; */}
+  width: 100px;
+
   ${"" /* background: #ffe963; */}
 `;
 

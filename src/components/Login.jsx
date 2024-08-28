@@ -243,28 +243,31 @@ const Login = () => {
           },
         }}
       >
-        <div className="bg-[#FFE963] login-wrapper w-[450px] overflow-hidden p-5 rounded-[20px]">
-          <div>
-            <p className="text-[#444444]">
+        <div className="bg-[#FFE963] mfa-dialog-wrapper w-[450px] overflow-hidden rounded-[20px]">
+          <div className="flex-row items-center justify-center p-10">
+            <p className="text-[#444444] text-center">
               Check Your {mfaEmail} Email & Enter 6 digit code here
             </p>
             <input
               onChange={(e) => {
                 setDigits(e.target.value);
               }}
-              className="p-2  w-[300px] text-center bg-transparent border-[#444444] border-2 rounded-sm border-opacity-30 "
+              className="p-2  w-[100%] text-center bg-transparent border-[#444444] border-2 rounded-sm border-opacity-30 "
               type="number"
               name="digitLogin"
               id="digitLogin"
             />
-            <button
-              onClick={() => {
-                checkDigit();
-              }}
-              className="rounded-sm bg-[#444444] hover:bg-gray-900 text-white w-[100px] h-[43px]"
-            >
-              Verify
-            </button>
+            <div className="flex items-center justify-center mt-2">
+              <button
+                // style={{
+                onClick={() => {
+                  checkDigit();
+                }}
+                className="rounded-sm bg-[#444444] hover:bg-gray-900 text-white w-[100px] h-[43px]"
+              >
+                Verify
+              </button>
+            </div>
           </div>
         </div>
       </Dialog>
