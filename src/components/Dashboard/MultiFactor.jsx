@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, React } from "react";
 import { Dialog } from "@mui/material";
 import {
   checkIsMFA,
@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { dialogContext } from "./../../context/AooProvider";
 import Tostify from "./Tostify.jsx";
 import ReactGA from "react-ga4";
+import LoaderToggle from "./Loader.jsx";
 
 const dialogStyle = {
   position: "fixed",
@@ -34,7 +35,7 @@ const dialogMobileStyle = {
 };
 
 const MultiFactor = () => {
-  const { userData } = useContext(dialogContext);
+  const { userData, setLoading } = useContext(dialogContext);
   const [isMFA, setIsMFA] = useState(null);
   const [email, setEmail] = useState("");
   const [verifyDialog, setVerifyDialog] = useState(false);
@@ -68,6 +69,7 @@ const MultiFactor = () => {
             progress: undefined,
             theme: "light",
           });
+
           return;
         }
       } catch (error) {
@@ -121,6 +123,7 @@ const MultiFactor = () => {
   };
 
   const verifySecret = async () => {
+    setLoading(true);
     const receivedCode = String(reciveDigit);
     const enteredCode = String(digit);
 
@@ -128,6 +131,7 @@ const MultiFactor = () => {
       try {
         let result = await trueMFA({ username: userData.username });
         if (result.status === 200) {
+          setLoading(false);
           toast.success("Verification Done...", {
             position: "bottom-right",
             autoClose: 5000,
@@ -172,11 +176,13 @@ const MultiFactor = () => {
         theme: "light",
       });
     }
+    setLoading(false);
   };
 
   return (
     <div className="mfa-wrapper w-[100%] border-none h-[100%] p-2 flex justify-center ">
       <Tostify />
+      <LoaderToggle />
       {!isMFA && (
         <>
           <div className=" mfa-content-wrapper w-[80%] flex-row justify-center  ">

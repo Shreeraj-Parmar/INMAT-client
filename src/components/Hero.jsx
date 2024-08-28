@@ -1,10 +1,13 @@
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 
 import Tostify from "./Dashboard/Tostify";
+import LoaderToggle from "./Dashboard/Loader";
 import ReactGA from "react-ga4";
-import { useEffect } from "react";
+import { useEffect, useContext, React } from "react";
+import { dialogContext } from "../context/AooProvider";
 
 const Hero = () => {
+  const { loading } = useContext(dialogContext);
   useEffect(() => {
     ReactGA.event({
       category: "HERo",
@@ -15,6 +18,7 @@ const Hero = () => {
   return (
     <div className="wrapper-hero bg-[url('/invoiceAssets/hero2.png')] bg-cover h-[92vh] w-[100vw] flex flex-col lg:flex-row gap-10 p-[100px]">
       <Tostify />
+      <LoaderToggle />
       <div className="right-hero w-[50%] lg:w-[50%] lg:pr-[0px] lg:mt-[60px] lg:text-left pt-[80px]  pr-[0px] p-[60px]  mt-[60px]">
         <h2 className="text-5xl hero-heading">
           Welocme To Invoice Builder INMAT

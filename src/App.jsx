@@ -1,5 +1,5 @@
 // components:
-
+import React from "react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Login from "./components/Login";
@@ -47,6 +47,7 @@ function App() {
     <>
       <AllProvider>
         <Tostify />
+
         <RouterProvider router={router} />
       </AllProvider>
     </>

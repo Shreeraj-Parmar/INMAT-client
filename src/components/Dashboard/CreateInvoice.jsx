@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, React } from "react";
 import { toast } from "react-toastify";
 
 import { dialogContext } from "../../context/AooProvider";
@@ -10,13 +10,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import InvoicePrintPreview from "./InvoicePrintPreview.jsx";
 import Tostify from "./Tostify.jsx";
 import ReactGA from "react-ga4";
+import LoaderToggle from "./Loader.jsx";
 
 const CreateInvoice = () => {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  const { userData, setAllData } = useContext(dialogContext);
+  const { userData, setAllData, setLoading } = useContext(dialogContext);
 
   const [items, setItems] = useState([
     { item: "", price: "", quantity: "", amount: "" },
@@ -136,6 +137,7 @@ const CreateInvoice = () => {
   };
 
   const printData = async () => {
+    setLoading(true);
     if (
       !items ||
       items[0].price === "" ||
@@ -166,10 +168,12 @@ const CreateInvoice = () => {
       label: "Print Button Button",
     });
     await sendInvoiceData(invoiceData);
+    setLoading(false);
   };
 
   return (
     <div className="create-invoice-wrapper  w-[100%] h-[100%] flex-row space-y-2">
+      <LoaderToggle />
       <Tostify />
       <div className="flex justify-center create-text-1  gap-2 mt-2">
         <TextField

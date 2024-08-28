@@ -1,8 +1,9 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, React } from "react";
 import { getInvoiceData, updateInvoices } from "../../services/api.js";
 import { dialogContext } from "../../context/AooProvider.jsx";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+
 import Dialog from "@mui/material/Dialog";
 import { toast } from "react-toastify";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -10,6 +11,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import Tostify from "./Tostify.jsx";
 import ReactGA from "react-ga4";
+import LoaderToggle from "./Loader.jsx";
 
 const dialogStyle = {
   position: "fixed",
@@ -39,7 +41,7 @@ const Filter = () => {
   const [invoices, setInvoices] = useState([]);
   const [filteredInvoices, setFilteredInvoices] = useState([]);
   // const [hoo, setHoo] = useState(false);
-  const { userData, allData, classChe } = useContext(dialogContext);
+  const { userData, allData, classChe, setLoading } = useContext(dialogContext);
 
   const [deletePop, setDeletePop] = useState(false);
   const [invoiceToDelete, setInvoiceToDelete] = useState(null);
@@ -63,14 +65,16 @@ const Filter = () => {
 
   useEffect(() => {
     const fetchInvoices = async () => {
+      setLoading(true);
       let res = await getInvoiceData(userData);
       setInvoices(res);
       setFilteredInvoices(res);
       console.log(invoices);
+      setLoading(false);
     };
 
     fetchInvoices();
-  }, [deletePop, userData.username]);
+  }, [deletePop === false, userData.username]);
 
   const handleDeleteInvoice = async (id) => {
     let filtred = invoices.filter((inv) => inv._id !== id);
@@ -83,21 +87,24 @@ const Filter = () => {
     //api :
     let res = await updateInvoices(invoiceToDelete);
     if (res.status === 200) {
-      toast.success("Invoice Deleted Successfully..", {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      setLoading(false);
+      // toast.success("Invoice Deleted Successfully..", {
+      //   position: "bottom-right",
+      //   autoClose: 2000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: "light",
+      // });
       const fetchInvoices = async () => {
+        // setLoading(true);
         let res = await getInvoiceData(userData);
         setInvoices(res);
         setFilteredInvoices(res);
         console.log(invoices);
+        // setLoading(false);
       };
 
       fetchInvoices();
@@ -133,6 +140,7 @@ const Filter = () => {
   };
 
   const printAllData = async () => {
+    setLoading(true);
     console.log(invoices);
     ReactGA.event({
       category: "Filter invoice",
@@ -141,43 +149,52 @@ const Filter = () => {
     });
     console.log(allData);
     try {
-      const response = await fetch("http://localhost:8000/download-all-pdf", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({
-          invoices: invoices,
-          username: userData.username,
-        }),
-      });
+      console.log(`${import.meta.env.VITE_API_URL}`);
+      // const response = await axios.post(
+      //   `${import.meta.env.VITE_API_URL}/download-all-pdf`,
+      //   {  }
+      // );
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/download-all-pdf`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            invoices: invoices,
+            username: userData.username,
+          }),
+        }
+      );
 
-      if (!response.ok) {
+      if (!response) {
         throw new Error("Network response was not ok");
       } else {
-        toast.success("All invoice PDF Downloaded, Check in your file", {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        setLoading(false);
       }
 
       const blob = await response.blob();
-      if (blob.type !== "application/pdf") {
-        throw new Error("Received file is not a PDF");
-      }
+      // if (blob.type !== "application/pdf") {
+      //   throw new Error("Received file is not a PDF");
+      // }
 
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
       a.download = "All-Invoice.pdf";
       a.click();
+      toast.success("All invoice PDF Downloaded, Check in your file", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       ReactGA.event({
         category: "Filter invoice",
         action: `${userData.username} downloaded all pdf`,
@@ -196,49 +213,62 @@ const Filter = () => {
         theme: "light",
       });
     }
+    setLoading(false);
   };
 
   const printOne = async (id) => {
+    setLoading(true);
     ReactGA.event({
       category: "Filter invoice",
       action: `${userData.username} download pdf`,
       label: "Filter Invoice Component",
     });
     try {
-      const response = await fetch("http://localhost:8000/download-one-pdf", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({ id: id, classChe: classChe }),
-      });
+      // const response = await axios.post(
+      //   `${import.meta.env.VITE_API_URL}/download-one-pdf`,
+      //   { id: id, classChe: classChe }
+      // );
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/download-one-pdf`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            id: id,
+            classChe: classChe,
+          }),
+        }
+      );
 
-      if (!response.ok) {
+      if (!response) {
         throw new Error("Network response was not ok");
       } else {
-        toast.success("invoice PDF Downloaded, Check in your file", {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        setLoading(false);
       }
 
       const blob = await response.blob();
-      if (blob.type !== "application/pdf") {
-        throw new Error("Received file is not a PDF");
-      }
+      // if (blob.type !== "application/pdf") {
+      //   throw new Error("Received file is not a PDF");
+      // }
 
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
       a.download = "Invoice.pdf";
       a.click();
+      toast.success("invoice PDF Downloaded, Check in your file", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       ReactGA.event({
         category: "Filter invoice",
         action: `${userData.username} Download Printed PDF`,
@@ -247,12 +277,24 @@ const Filter = () => {
       window.URL.revokeObjectURL(url); // Clean up
     } catch (error) {
       console.error("There was an error downloading the PDF:", error);
+      toast.error(error, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
+    setLoading(false);
   };
 
   return (
     <div className="wrapper-filter w-[100%] h-[100%] flex-row space-y-2">
       <Tostify />
+      <LoaderToggle />
       <div className="filter-search-wrapper flex justify-center mb-8 items-center">
         <div className="relative flex gap-2">
           {isSearching ? (

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, React } from "react";
 import ReactGA from "react-ga4";
 const GetStart = () => {
   useEffect(() => {

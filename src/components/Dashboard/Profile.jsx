@@ -1,10 +1,11 @@
 import TextField from "@mui/material/TextField";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, React } from "react";
 import { dialogContext } from "../../context/AooProvider";
 import { updateProfile, getData } from "../../services/api.js";
 import { toast } from "react-toastify";
 import Tostify from "./Tostify.jsx";
 import ReactGA from "react-ga4";
+import LoaderToggle from "./Loader.jsx";
 
 const defaultUpdatedData = {
   company: "",
@@ -16,13 +17,18 @@ const defaultUpdatedData = {
 
 const Profile = () => {
   const [updatedProfile, setUpdatedProfile] = useState(defaultUpdatedData);
-  const { userData, allData, setAllData } = useContext(dialogContext);
+  const { userData, allData, setAllData, setLoading } =
+    useContext(dialogContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUpdatedProfile({ ...updatedProfile, [name]: value });
   };
   useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
     ReactGA.event({
       category: "Profile",
       action: `${userData.username} is enter in Profile Compo`,
@@ -32,14 +38,17 @@ const Profile = () => {
 
   useEffect(() => {
     const getUserAllData = async () => {
+      // setLoading(true);
       let res = await getData(userData);
       setAllData(res);
       console.log(allData);
+      // setLoading(false);
     };
     getUserAllData();
   }, [userData, updatedProfile]);
 
   const handleUpdateClick = async () => {
+    // setLoading(true);
     // console.log(updatedProfile);
     let res = await updateProfile({
       profile: updatedProfile,
@@ -84,11 +93,13 @@ const Profile = () => {
         theme: "light",
       });
     }
+    // setLoading(false);
   };
 
   return (
     <div className="create-invoice-wrapper  w-[100%] h-[100%] flex-row space-y-2">
       <Tostify />
+      <LoaderToggle />
       <div className="flex create-text-1 justify-center gap-2 mt-2">
         <TextField
           id="company"

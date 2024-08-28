@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, React } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -7,6 +7,7 @@ import ReactGA from "react-ga4";
 
 import { dialogContext } from "../../context/AooProvider.jsx";
 import { toast } from "react-toastify";
+import LoaderToggle from "./Loader.jsx";
 
 const dialogStyle = {
   width: "100vw",
@@ -34,7 +35,7 @@ const InvoicePrintPreview = ({
   discount,
   items,
 }) => {
-  const { classChe, setClass } = useContext(dialogContext); // Default color
+  const { classChe, setClass, setLoading } = useContext(dialogContext); // Default color
   useEffect(() => {
     ReactGA.event({
       category: "Invoice Print Preview",
@@ -44,6 +45,7 @@ const InvoicePrintPreview = ({
   }, []);
 
   const downloadPDF = async () => {
+    setLoading(true);
     console.log(invoiceData);
     try {
       const response = await fetch(
@@ -63,7 +65,7 @@ const InvoicePrintPreview = ({
         }
       );
 
-      if (!response.ok) {
+      if (!response) {
         toast.error("Network response was not ok", {
           position: "bottom-right",
           autoClose: 5000,
@@ -76,28 +78,29 @@ const InvoicePrintPreview = ({
         });
       }
       if (response.status === 200) {
-        toast.success("PDF Downloaded, Check in your file", {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        setLoading(false);
       }
 
       const blob = await response.blob();
-      if (blob.type !== "application/pdf") {
-        throw new Error("Received file is not a PDF");
-      }
+      // if (blob.type !== "application/pdf") {
+      //   throw new Error("Received file is not a PDF");
+      // }
 
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
       a.download = `${invoiceData.company}.pdf`;
       a.click();
+      toast.success("PDF Downloaded, Check in your file", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       window.URL.revokeObjectURL(url); // Clean up
     } catch (error) {
       toast.error(error.message, {
@@ -111,6 +114,7 @@ const InvoicePrintPreview = ({
         theme: "light",
       });
     }
+    setLoading(false);
   };
 
   return (
@@ -128,6 +132,7 @@ const InvoicePrintPreview = ({
     >
       <DialogContent>
         <div className="flex w-full h-full print-wrapper">
+          <LoaderToggle />
           <div className="color-wrapper w-1/4 p-8 overflow-y-scroll border-2 border-[#444444] border-opacity-30">
             <div className="flex flex-col space-y-2">
               <div className="hover:border-[#444444] color-btn-wrapper hover:border-opacity-30 hover:border-2 rounded-md">

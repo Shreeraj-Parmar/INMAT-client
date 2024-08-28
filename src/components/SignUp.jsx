@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, React } from "react";
 
 import Dialog from "@mui/material/Dialog";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
@@ -47,6 +47,7 @@ const SignUp = () => {
     setSignUpOpen,
     setUserData,
     setLoginData,
+    setLoading,
     setIsLogin,
   } = useContext(dialogContext);
   const [newUser, setNewUser] = useState(defalutSignUpData);
@@ -61,6 +62,7 @@ const SignUp = () => {
   };
 
   const handleSignUpClick = async () => {
+    setLoading(true);
     // console.log(newUser);
     setNewUser(defalutSignUpData);
     let res = await sendNewuser(newUser);
@@ -96,6 +98,7 @@ const SignUp = () => {
         theme: "light",
       });
     }
+    setLoading(false);
   };
 
   return (
@@ -109,6 +112,7 @@ const SignUp = () => {
       }}
     >
       <Tostify />
+
       <div className="bg-[#FFE963] signup-wrapper w-[450px] overflow-hidden p-5 rounded-[20px]">
         <div className="flex-row text-center mt-[30px]">
           <h2 className="text-3xl text-black text-center m-1 font-">

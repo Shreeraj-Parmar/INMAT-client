@@ -1,13 +1,14 @@
 //components :
 import Menu from "./Menu";
 
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, React } from "react";
 import { dialogContext } from "../../context/AooProvider";
 import RenderContent from "./RenderContent";
 import { useNavigate } from "react-router-dom";
 
 import Tostify from "./Tostify";
 import { refresIt, getDatawithToken } from "../../services/api.js";
+import LoaderToggle from "./Loader.jsx";
 
 const Dashboard = () => {
   const {
@@ -16,10 +17,12 @@ const Dashboard = () => {
 
     setLoginData,
     setUserData,
+    setLoading,
   } = useContext(dialogContext);
   const navigate = useNavigate();
 
   useEffect(() => {
+    setLoading(true);
     const token = localStorage.getItem("refreshToken");
     if (!token) {
       navigate("/");
@@ -33,14 +36,17 @@ const Dashboard = () => {
       };
       getUserdata();
     }
+    setLoading(false);
   }, []);
 
   const refreshMyToken = async () => {
+    setLoading(true);
     let res = await refresIt({
       refreshToken: localStorage.getItem("refreshToken"),
     });
     console.log(res);
     localStorage.setItem("token", res.accessToken);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -55,6 +61,7 @@ const Dashboard = () => {
   return (
     <div className="max-w-[100vw] dashboard-wrapper max-h-[100vh] w-[100vw] h-[100vh]  bg-[#444444] flex">
       <Tostify />
+      <LoaderToggle />
       <div className="slidbar dashboard-slidbar-wrapper bg-[#FFE963] h-[100vh] w-[20%] rounded-tr-3xl rounded-br-3xl p-[10px] flex justify-center">
         <Menu setCurrMenuClick={setCurrMenuClick} />
       </div>

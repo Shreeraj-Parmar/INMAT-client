@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, React } from "react";
 import { toast } from "react-toastify";
 
 import Dialog from "@mui/material/Dialog";
@@ -15,6 +15,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import Tostify from "./Dashboard/Tostify.jsx";
+import LoaderToggle from "./Dashboard/Loader.jsx";
 
 const dialogStyle = {
   position: "fixed",
@@ -49,6 +50,7 @@ const Login = () => {
     loginOpen,
     setLoginOpen,
     setSignUpOpen,
+    setLoading,
     loginData,
     setLoginData,
     setIsLogin,
@@ -68,6 +70,7 @@ const Login = () => {
   };
 
   const handleLoginClick = async (e) => {
+    setLoading(true);
     ReactGA.event({
       category: "User Login",
       action: ` ${loginData.username} Clicked on Login Button`,
@@ -110,7 +113,8 @@ const Login = () => {
     } else {
       console.log("incorrect username or password please try again");
     }
-    setLoginData(defalutLoginData);
+    setLoading(false);
+    // setLoginData(defalutLoginData);
   };
 
   const checkDigit = () => {
@@ -140,6 +144,7 @@ const Login = () => {
         action: ` ${loginData.username} Succcessfull Login with mfa`,
         label: "Login Button",
       });
+
       setTimeout(() => {
         setMfaDialog(false);
         navigate("/dashboard");
@@ -161,6 +166,7 @@ const Login = () => {
   return (
     <>
       <Tostify />
+      <LoaderToggle />
       <Dialog
         open={loginOpen}
         PaperProps={{

@@ -1,5 +1,5 @@
 import Dialog from "@mui/material/Dialog";
-import { useEffect, useState } from "react";
+import { useEffect, useState, React } from "react";
 
 const dialogStyle = {
   position: "fixed",
