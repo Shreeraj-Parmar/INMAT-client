@@ -4,6 +4,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import SecurityIcon from "@mui/icons-material/Security";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
+import ArticleIcon from "@mui/icons-material/Article";
 import { useNavigate } from "react-router-dom";
 import { useContext, React } from "react";
 import { dialogContext } from "../../context/AooProvider";
@@ -131,7 +132,7 @@ const Menu = ({ setCurrMenuClick }) => {
             }  hover:bg-[#1B59F8] hover:bg-opacity-[20%] w-[260px] h-[50px]  rounded-md p-3 flex justify-start gap-5 items-center `}
             onClick={() => handleClick("pr")}
           >
-            <EmojiObjectsIcon style={{ fontSize: "30px", color: "#444444" }} />
+            <ArticleIcon style={{ fontSize: "30px", color: "#444444" }} />
             <button
               className={` menu-btn ${
                 activeButton === "pr" ? "text-blue-600" : ""

@@ -5,7 +5,7 @@ const Navbar = () => {
   const { setLoginOpen, setSignUpOpen } = useContext(dialogContext);
 
   return (
-    <nav className="h-[8vh] bg-[#444444] navbar w-[100vw] flex items-center justify-between p-5">
+    <nav className="h-[8vh] navbar bg-[#444444] navbar w-[100vw] flex items-center justify-between p-5">
       <h1 className="text-white ml-4 text-3xl">INMAT</h1>
       <div className="p-5 flex gap-2">
         <button
