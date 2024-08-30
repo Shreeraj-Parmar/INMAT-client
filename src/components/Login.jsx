@@ -70,7 +70,7 @@ const Login = () => {
   };
 
   const handleLoginClick = async (e) => {
-    // setLoading(true);
+    setLoading(true);
     ReactGA.event({
       category: "User Login",
       action: ` ${loginData.username} Clicked on Login Button`,

@@ -15,6 +15,7 @@ import CheckInternet from "./CheckInternet";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Tostify from "./components/Dashboard/Tostify.jsx";
+import ProjectReport from "./components/ProjectReport.jsx";
 
 const googleAnalyticsId = import.meta.env.VITE_GOOGLE_ANALYTICS_ID;
 
@@ -41,6 +42,10 @@ function App() {
     {
       path: "/dashboard",
       element: <Dashboard />,
+    },
+    {
+      path: "/pr",
+      element: <ProjectReport />,
     },
   ]);
   return (

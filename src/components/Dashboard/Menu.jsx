@@ -122,10 +122,29 @@ const Menu = ({ setCurrMenuClick }) => {
             </button>
           </div>
         </div>
+        <div className="up flex-row menu-2-btns-wrapper space-y-2 w-[100%] h-[100%]">
+          <div
+            className={`cursor-pointer mt-2 menu-2-btn-wrapper ${
+              activeButton === "pr"
+                ? "text-blue-600 bg-[#1B59F8] bg-opacity-[20%]"
+                : ""
+            }  hover:bg-[#1B59F8] hover:bg-opacity-[20%] w-[260px] h-[50px]  rounded-md p-3 flex justify-start gap-5 items-center `}
+            onClick={() => handleClick("pr")}
+          >
+            <EmojiObjectsIcon style={{ fontSize: "30px", color: "#444444" }} />
+            <button
+              className={` menu-btn ${
+                activeButton === "pr" ? "text-blue-600" : ""
+              } font-semibold menu-btn rounded-lg `}
+            >
+              Project Report
+            </button>
+          </div>
+        </div>
       </div>
       <button
         onClick={() => logoutClick()}
-        className="font-semibold menu-logout-btn rounded-lg hover:bg-gray-700 w-[80px] p-2 mt-[240px] ml-[75px] text-center h-[40px] bg-[#444444] text-white "
+        className="font-semibold menu-logout-btn rounded-lg hover:bg-gray-700 w-[80px] p-2 mt-[190px] ml-[75px] text-center h-[40px] bg-[#444444] text-white "
       >
         Logout
       </button>

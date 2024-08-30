@@ -7,6 +7,7 @@ import Profile from "./Profile";
 import MultiFactor from "./MultiFactor";
 import GetStart from "./GetStart";
 import MenuIcon from "@mui/icons-material/Menu";
+import ProjectReport from "./../ProjectReport";
 import { useContext } from "react";
 import { dialogContext } from "../../context/AooProvider";
 
@@ -33,6 +34,7 @@ const RenderContent = ({ currMenuClick }) => {
         {currMenuClick === "profile" && <Profile />}
         {currMenuClick === "mfa" && <MultiFactor />}
         {currMenuClick === "start" && <GetStart />}
+        {currMenuClick === "pr" && <ProjectReport />}
       </div>
     </>
   );

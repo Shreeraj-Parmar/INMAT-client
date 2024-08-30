@@ -6,7 +6,10 @@ import ReactGA from "react-ga4";
 import { useEffect, useContext, React } from "react";
 import { dialogContext } from "../context/AooProvider";
 
+import { useNavigate } from "react-router-dom";
+
 const Hero = () => {
+  const navigate = useNavigate();
   const { loading } = useContext(dialogContext);
   useEffect(() => {
     ReactGA.event({
@@ -45,6 +48,14 @@ const Hero = () => {
             Print as PDF in Multiple Colors
           </li>
         </ul>
+        <button
+          className="PR w-[200px] h-[40px] text-white bg-[#444444] rounded-3xl mt-3"
+          onClick={() => {
+            navigate("/pr");
+          }}
+        >
+          View Project Report
+        </button>
       </div>
       <div className="left-hero w-[50%] mr-[100px]"></div>
     </div>
