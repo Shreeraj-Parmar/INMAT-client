@@ -21,7 +21,7 @@ const Menu = ({ setCurrMenuClick }) => {
   };
   const logoutClick = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("refreshToken");
+    // localStorage.removeItem("refreshToken");
     navigate("/");
   };
   return (
