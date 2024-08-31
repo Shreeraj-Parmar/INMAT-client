@@ -13,24 +13,32 @@ import ReactGA from "react-ga4";
 import LoaderToggle from "./Loader.jsx";
 
 const CreateInvoice = () => {
+  // this is event for scroll traking in ga4
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll); // handleScroll is fun in below
   }, []);
+  // import globle staate from the dialogContext
   const { userData, setAllData, setLoading } = useContext(dialogContext);
 
+  // items is arr state var that store invoice items
   const [items, setItems] = useState([
     { item: "", price: "", quantity: "", amount: "" },
   ]);
+
+  // this is scroll event for ga4
   const handleScroll = () => {
+    // ReactGa.event() is for traking user events in ga4
     ReactGA.event({
       category: "User",
       action: `${userData.username}Create Invoice Component Scrolled `,
       label: "HomePage",
     });
   };
+
+  // this is sample default invoice data {initialized data in invoiceData}
   const defaultInvoiceData = {
-    user: `${userData.username}`,
+    user: `${userData.username}`, // by default set
     company: "",
     email: "",
     mobile: "",
@@ -40,15 +48,24 @@ const CreateInvoice = () => {
     discount: "",
     totalAmount: "",
   };
-
+  // state for store invoice data
   const [invoiceData, setInvoiceData] = useState(defaultInvoiceData);
+  // state for open & close print Dialog
   const [printDialog, setPrintDialog] = useState(false);
+  // state for calculate subTotal amount in invoice
   const [subTotal, setSubTotal] = useState(0);
+  //state for calculate Total amount in invoice
   const [total, setTotal] = useState(0);
+  // state for calculate discount in invoice
   const [discount, setDiscount] = useState(0);
 
+  // this is dynamic input field handle function , when click 'Additem' this create input fields for addd new items in invoice
+  // it take index,field& value as an arguments.
   const handleItemChange = (index, field, value) => {
+    // create new arr name of "newItems" which is copy of items arr.
     const newItems = [...items];
+    // console.log(newItems[index][field]);
+    // index means each object of items arr.
     newItems[index][field] = value;
 
     if (field === "price" || field === "quantity") {
@@ -244,6 +261,7 @@ const CreateInvoice = () => {
             </p>
           </div>
           <div className="items-down">
+            {/* we apply map fuction on items arr. to handle multiple inpute fields with help of index */}
             {items.map((item, index) => (
               <div
                 key={index}

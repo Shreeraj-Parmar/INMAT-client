@@ -117,6 +117,19 @@ const InvoicePrintPreview = ({
     setLoading(false);
   };
 
+  // responsce from backend is a binary
+  // Creating a Blob Object:
+  // response.blob() converts the response into a binary large object (Blob), which represents the PDF file.
+
+  // Creating a Downloadable URL:
+  // window.URL.createObjectURL(blob) creates a temporary URL that points to the PDF file in memory.
+
+  // Triggering the Download:
+  // The code creates an anchor (<a>) element, sets its href to the blob URL, and assigns the download attribute to suggest a file name. It then programmatically clicks the anchor to start the download.
+
+  // Cleaning Up:
+  // After downloading the file, the code revokes the URL using window.URL.revokeObjectURL(url) to free up memory.
+
   return (
     <Dialog
       open={printDialog}
