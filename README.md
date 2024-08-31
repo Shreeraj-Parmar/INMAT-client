@@ -1,4 +1,4 @@
-# Google Analytics With "react-ga" lybrary:
+# Google Analytics With "react-ga4" lybrary: 
 
 - Google Analytics ID:
 
