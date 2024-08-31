@@ -26,6 +26,15 @@ const dialogMobileStyle = {
   border: "2px solid green",
   overflowX: "hidden",
 };
+
+const dialogLaptopStyle = {
+  maxWidth: "100vw",
+  maxHeight: "100vh",
+  width: "100vw",
+  border: "2px solid green",
+  backgroundColor: "#ffffff",
+  height: "90vh",
+};
 const InvoicePrintPreview = ({
   invoiceData,
   setPrintDialog,
@@ -138,6 +147,7 @@ const InvoicePrintPreview = ({
         sx: {
           ...dialogStyle,
           ...(window.innerWidth <= 768 && dialogMobileStyle),
+          ...(window.innerWidth <= 1024 && dialogLaptopStyle),
         },
       }}
       fullWidth

@@ -24,7 +24,7 @@ const Hero = () => {
       <LoaderToggle />
       <div className="right-hero w-[50%] lg:w-[50%] lg:pr-[0px] lg:mt-[60px] lg:text-left pt-[80px]  pr-[0px] p-[60px]  mt-[60px]">
         <h2 className="text-5xl hero-heading">
-          Welocme To Invoice Builder INMAT
+          Welcome To Invoice Builder INMAT
         </h2>
 
         <p className=" text-xl hero-heading-2 mt-5 ml-1">

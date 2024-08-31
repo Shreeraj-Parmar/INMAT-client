@@ -325,7 +325,7 @@ const Filter = () => {
           />
         </div>
       </div>
-      <div className="invoice-hade  w-[100%] text-[17px] text-[#444444] h-[44px] flex  items-center p-5  border-b-2 border-[#444444] font-semibold border-opacity-30 ">
+      <div className="invoice-hade invoice-ha  w-[100%] text-[17px] text-[#444444] h-[44px] flex  items-center p-5  border-b-2 border-[#444444] font-semibold border-opacity-30 ">
         <p className="w-[150px]">Company Name</p>
 
         <p className=" w-[130px] ml-[190px] mobile-hide  ">Mobile Number</p>

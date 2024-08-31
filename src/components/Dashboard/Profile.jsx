@@ -97,10 +97,10 @@ const Profile = () => {
   };
 
   return (
-    <div className="create-invoice-wrapper  w-[100%] h-[100%] flex-row space-y-2">
+    <div className="create-invoice-wrapper profile-wrapper w-[100%] h-[100%] flex-row space-y-2">
       <Tostify />
       <LoaderToggle />
-      <div className="flex create-text-1 justify-center gap-2 mt-2">
+      <div className="flex create-text-1 profile-text-1 justify-center gap-2 mt-2">
         <TextField
           id="company"
           name="company"
